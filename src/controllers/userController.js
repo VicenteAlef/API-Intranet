@@ -54,3 +54,56 @@ exports.createUser = async (req, res) => {
       .json({ error: "Erro interno ao tentar salvar o usuário." });
   }
 };
+
+// Lista todos os usuários (Admin e Suporte) - Rota: GET /api/users
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await Usuario.findAll({
+      // Seleciona apenas os campos necessários para a listagem
+      attributes: ["id", "nome", "email", "departamento", "role", "ativo"],
+      order: [["nome", "ASC"]], // Ordena alfabeticamente
+    });
+
+    return res.json(users);
+  } catch (error) {
+    console.error("Erro ao listar usuários:", error);
+    return res.status(500).json({ error: "Erro interno ao buscar usuários." });
+  }
+};
+
+/**
+ * Busca dados de um usuário específico
+ * Rota: GET /api/users/:id
+ * Regra: Admin/Suporte podem ver qualquer um. Usuário Comum só pode ver a si mesmo.
+ */
+exports.getUserById = async (req, res) => {
+  const { id } = req.params;
+  const usuarioLogado = req.user; // Vem do middleware 'protect'
+
+  // REGRA DE SEGURANÇA:
+  // Se não for Admin nem Suporte, só pode acessar se o ID solicitado for o dele mesmo.
+  if (
+    usuarioLogado.role !== "Admin" &&
+    usuarioLogado.role !== "Suporte" &&
+    usuarioLogado.id !== parseInt(id)
+  ) {
+    return res.status(403).json({ error: "Acesso negado a este perfil." });
+  }
+
+  try {
+    const user = await Usuario.findByPk(id, {
+      attributes: { exclude: ["senha"] }, // Exclui a senha do retorno
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "Usuário não encontrado." });
+    }
+
+    return res.json(user);
+  } catch (error) {
+    console.error("Erro ao buscar usuário:", error);
+    return res
+      .status(500)
+      .json({ error: "Erro interno ao buscar dados do usuário." });
+  }
+};
