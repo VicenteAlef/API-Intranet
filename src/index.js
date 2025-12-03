@@ -7,6 +7,9 @@ const cors = require("cors");
 const { sequelize, testConnection } = require("./config/database");
 const Usuario = require("./models/Usuario");
 
+// Importa a função de seed
+const { seedAdminUser } = require("./seeders/adminSeeder");
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -17,6 +20,8 @@ app.use(express.json());
 
 // Rota de Teste Simples
 app.get("/", (req, res) => {
+  // Importa a função de seed
+  const { seedAdminUser } = require("./seeders/adminSeeder");
   res.send("API da Intranet online! Pronto para receber requisições.");
 });
 
@@ -27,6 +32,9 @@ async function startServer() {
   // Sincroniza o modelo com o banco de dados.
   await sequelize.sync({ force: false });
   console.log("Modelos sincronizados com o banco de dados.");
+
+  // EXECUTA O SCRIPT DE CRIAÇÃO DO ADMIN INICIAL
+  await seedAdminUser();
 
   app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}`);
