@@ -107,3 +107,115 @@ exports.getUserById = async (req, res) => {
       .json({ error: "Erro interno ao buscar dados do usuário." });
   }
 };
+
+/**
+ * Atualiza dados de um usuário (Admin)
+ * Rota: PUT /api/users/:id
+ * Nota: Se a senha for enviada, o hook do modelo irá criptografá-la novamente.
+ */
+exports.updateUser = async (req, res) => {
+  const { id } = req.params;
+  const { nome, email, senha, departamento, role } = req.body;
+
+  try {
+    const user = await Usuario.findByPk(id);
+
+    if (!user) {
+      return res.status(404).json({ error: 'Usuário não encontrado.' });
+    }
+
+    // Verifica se o email foi alterado e se já existe em outro usuário
+    if (email && email !== user.email) {
+      const emailExists = await Usuario.findOne({ where: { email } });
+      if (emailExists) {
+        return res.status(409).json({ error: 'Este email já está em uso por outro usuário.' });
+      }
+    }
+
+    // Atualiza os campos
+    user.nome = nome || user.nome;
+    user.email = email || user.email;
+    user.departamento = departamento || user.departamento;
+    user.role = role || user.role;
+    
+    // Se a senha foi informada, atualiza (o hook beforeSave fará o hash)
+    if (senha) {
+      user.senha = senha;
+    }
+
+    await user.save(); // Salva e dispara os hooks
+
+    return res.json({
+      message: 'Usuário atualizado com sucesso.',
+      user: {
+        id: user.id,
+        nome: user.nome,
+        email: user.email,
+        role: user.role,
+        departamento: user.departamento
+      }
+    });
+
+  } catch (error) {
+    console.error('Erro ao atualizar usuário:', error);
+    return res.status(500).json({ error: 'Erro interno ao atualizar usuário.' });
+  }
+};
+
+/**
+ * Alterna o status do usuário (Ativo/Inativo)
+ * Rota: PATCH /api/users/:id/status
+ */
+exports.toggleUserStatus = async (req, res) => {
+  const { id } = req.params;
+  const { ativo } = req.body; // Espera true ou false
+
+  if (typeof ativo !== 'boolean') {
+    return res.status(400).json({ error: 'O campo "ativo" deve ser booleano.' });
+  }
+
+  try {
+    const user = await Usuario.findByPk(id);
+
+    if (!user) {
+      return res.status(404).json({ error: 'Usuário não encontrado.' });
+    }
+
+    user.ativo = ativo;
+    await user.save();
+
+    return res.json({
+      message: `Usuário ${ativo ? 'ativado' : 'inativado'} com sucesso.`,
+      id: user.id,
+      ativo: user.ativo
+    });
+
+  } catch (error) {
+    console.error('Erro ao alterar status:', error);
+    return res.status(500).json({ error: 'Erro interno ao alterar status.' });
+  }
+};
+
+/**
+ * Exclui um usuário permanentemente
+ * Rota: DELETE /api/users/:id
+ */
+exports.deleteUser = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await Usuario.findByPk(id);
+
+    if (!user) {
+      return res.status(404).json({ error: 'Usuário não encontrado.' });
+    }
+
+    await user.destroy(); // Remove do banco de dados
+
+    return res.json({ message: 'Usuário excluído com sucesso.' });
+
+  } catch (error) {
+    console.error('Erro ao excluir usuário:', error);
+    return res.status(500).json({ error: 'Erro interno ao excluir usuário.' });
+  }
+};

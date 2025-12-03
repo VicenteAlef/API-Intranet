@@ -22,4 +22,18 @@ router.get(
 // Mas o usuário PRECISA estar logado (protect)
 router.get("/:id", protect, userController.getUserById);
 
+// 3. Atualização Completa de Usuário
+router.put("/:id", protect, authorize("Admin"), userController.updateUser);
+
+// 4. Inativar/Ativar Usuário (Controle de Status)
+router.patch(
+  "/:id/status",
+  protect,
+  authorize("Admin"),
+  userController.toggleUserStatus
+);
+
+// 5. Excluir Usuário
+router.delete("/:id", protect, authorize("Admin"), userController.deleteUser);
+
 module.exports = router;
