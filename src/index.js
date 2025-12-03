@@ -7,8 +7,8 @@ const cors = require("cors");
 const { sequelize, testConnection } = require("./config/database");
 const Usuario = require("./models/Usuario");
 
-// Importa a função de seed
-const { seedAdminUser } = require("./seeders/adminSeeder");
+const { seedAdminUser } = require("./seeders/adminSeeder"); // Importa a função de seed
+const authRoutes = require("./routes/authRoutes"); // Importa o módulo de rotas de autenticação
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -24,6 +24,8 @@ app.get("/", (req, res) => {
   const { seedAdminUser } = require("./seeders/adminSeeder");
   res.send("API da Intranet online! Pronto para receber requisições.");
 });
+
+app.use("/api/auth", authRoutes);
 
 // Inicialização da Aplicação
 async function startServer() {
