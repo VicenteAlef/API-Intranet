@@ -9,6 +9,7 @@ const Usuario = require("./models/Usuario");
 
 const { seedAdminUser } = require("./seeders/adminSeeder"); // Importa a função de seed
 const authRoutes = require("./routes/authRoutes"); // Importa o módulo de rotas de autenticação
+const userRoutes = require("./routes/userRoutes"); // Importa o novo módulo de rotas de usuários
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -25,7 +26,8 @@ app.get("/", (req, res) => {
   res.send("API da Intranet online! Pronto para receber requisições.");
 });
 
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", authRoutes); // Usa o módulo de rotas de autenticação
+app.use("/api/users", userRoutes); // Usa o novo módulo de rotas de usuários
 
 // Inicialização da Aplicação
 async function startServer() {
