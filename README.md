@@ -1,18 +1,18 @@
-## 💻 API Intranet
+# 💻 API Intranet
 
 ---
 
 ### 📝 Descrição do Projeto
 
-Esta API é o *backend* da aplicação de uma Intranet. Ela é responsável por gerenciar os dados de usuários, departamentos, notícias internas e outros recursos essenciais, fornecendo os *endpoints* necessários para o *frontend* e outras integrações internas. A parte do projeto referente ao frontend você encontra em [Repositório APP Intranet](https://github.com/VicenteAlef/APP-Intranet).
+Esta API é o _backend_ da aplicação de uma Intranet. Ela é responsável por gerenciar os dados de usuários, departamentos, notícias internas e outros recursos essenciais, fornecendo os _endpoints_ necessários para o _frontend_ e outras integrações internas. A parte do projeto referente ao frontend você encontra em [Repositório APP Intranet](https://github.com/VicenteAlef/APP-Intranet).
 Obs: Ainda em desenvolvimento. Algunas funcionalidades podem ainda não terem sido implementadas.
 
 **Principais Funcionalidades:**
 
-* Gerenciamento de **Usuários** (CRUD).
-* Autenticação e Autorização (JWT/OAuth).
-* Publicação e consulta de **Notícias** internas.
-* Consulta de **Departamentos** e informações de contato.
+- Gerenciamento de **Usuários** (CRUD).
+- Autenticação e Autorização (JWT/OAuth).
+- Publicação e consulta de **Notícias** internas.
+- Consulta de **Departamentos** e informações de contato.
 
 ---
 
@@ -24,31 +24,35 @@ Estas instruções guiarão você na obtenção de uma cópia do projeto em exec
 
 Você precisará ter instalado na sua máquina:
 
-* **Node.js** 
-* **NPM** 
-* **MySQL Server** 
-* **Docker e Docker Compose** (Opcional, mas recomendado para o ambiente)
+- **Node.js**
+- **NPM**
+- **MySQL Server**
+- **Docker e Docker Compose** (Opcional, mas recomendado para o ambiente)
 
 #### ⚙️ Instalação e Execução
 
 Siga os passos abaixo para configurar o ambiente:
 
 1.  **Clone o Repositório:**
+
     ```bash
-    git clone [https://github.com/VicenteAlef/API-Intranet.git](https://github.com/VicenteAlef/API-Intranet.git)
+    git clone https://github.com/VicenteAlef/API-Intranet.git
     cd API-Intranet
     ```
 
 2.  **Instale as Dependências:**
+
     ```bash
     npm install
     ```
 
 3.  **Configuração de Ambiente:**
-    * Crie um arquivo `.env` na raiz do projeto baseado no `.env.example`.
-    * Preencha as variáveis de ambiente, especialmente as de conexão com o Banco de Dados.
+
+    - Crie um arquivo `.env` na raiz do projeto baseado no `.env.example`.
+    - Preencha as variáveis de ambiente, especialmente as de conexão com o Banco de Dados.
 
     > **Exemplo (Apenas ilustrativo):**
+    >
     > ```
     > DB_HOST=localhost
     > DB_NAME=intranet_db
@@ -58,25 +62,25 @@ Siga os passos abaixo para configurar o ambiente:
     > PORT=3000
     > ```
 
-6.  **Inicie a Aplicação:**
+4.  **Inicie a Aplicação:**
     ```bash
     node src/index.js
     ```
-    A API estará rodando em `http://localhost:[Porta]`.
+    A API estará rodando em `http://localhost:3000`.
 
 ---
 
 ### 🗺️ Documentação da API (Endpoints)
 
-Abaixo estão alguns dos principais *endpoints*:
+Abaixo estão alguns dos principais _endpoints_:
 
-| Método | Endpoint | Descrição | Requer Autenticação |
-| :---: | :--- | :--- | :---: |
-| `POST` | `/api/auth/login` | Autentica um usuário e retorna um token JWT. | Não |
-| `GET` | `/api/users` | Retorna uma lista de todos os usuários. | Sim |
-| `GET` | `/api/news/{id}` | Retorna uma notícia específica pelo ID. | Não |
-| `POST` | `/api/news` | Cria uma nova notícia. | Sim (Admin) |
-| `GET` | `/api/departments` | Lista todos os departamentos. | Não |
+| Método | Endpoint           | Descrição                                    | Requer Autenticação |
+| :----: | :----------------- | :------------------------------------------- | :-----------------: |
+| `POST` | `/api/auth/login`  | Autentica um usuário e retorna um token JWT. |         Não         |
+| `GET`  | `/api/users`       | Retorna uma lista de todos os usuários.      |         Sim         |
+| `GET`  | `/api/news/{id}`   | Retorna uma notícia específica pelo ID.      |         Não         |
+| `POST` | `/api/news`        | Cria uma nova notícia.                       |     Sim (Admin)     |
+| `GET`  | `/api/departments` | Lista todos os departamentos.                |         Não         |
 
 ---
 
