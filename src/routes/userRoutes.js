@@ -17,15 +17,19 @@ router.get(
   userController.getAllUsers
 );
 
-// 2. Detalhes de um Usuário Específico
+// 2. Atualização do Próprio Perfil
+// Qualquer usuário logado pode atualizar seu próprio perfil
+router.patch("/profile", protect, userController.updateProfile);
+
+// 3. Detalhes de um Usuário Específico
 // O controle de quem pode ver quem é feito dentro do controller (getUserById)
 // Mas o usuário PRECISA estar logado (protect)
 router.get("/:id", protect, userController.getUserById);
 
-// 3. Atualização Completa de Usuário
+// 4. Atualização Completa de Usuário
 router.put("/:id", protect, authorize("Admin"), userController.updateUser);
 
-// 4. Inativar/Ativar Usuário (Controle de Status)
+// 5. Inativar/Ativar Usuário (Controle de Status)
 router.patch(
   "/:id/status",
   protect,
@@ -33,7 +37,7 @@ router.patch(
   userController.toggleUserStatus
 );
 
-// 5. Excluir Usuário
+// 6. Excluir Usuário
 router.delete("/:id", protect, authorize("Admin"), userController.deleteUser);
 
 module.exports = router;
