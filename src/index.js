@@ -10,6 +10,7 @@ const Usuario = require("./models/Usuario");
 const { seedAdminUser } = require("./seeders/adminSeeder"); // Importa a função de seed
 const authRoutes = require("./routes/authRoutes"); // Importa o módulo de rotas de autenticação
 const userRoutes = require("./routes/userRoutes"); // Importa o novo módulo de rotas de usuários
+const noticeRoutes = require("./routes/noticeRoutes"); // Importa o módulo de rotas de avisos
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -28,6 +29,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes); // Usa o módulo de rotas de autenticação
 app.use("/api/users", userRoutes); // Usa o novo módulo de rotas de usuários
+app.use("/api/notices", noticeRoutes); // Usa o módulo de rotas de avisos
 
 // Inicialização da Aplicação
 async function startServer() {
