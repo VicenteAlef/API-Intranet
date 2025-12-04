@@ -60,7 +60,7 @@ Siga os passos abaixo para configurar o ambiente:
 
 6.  **Inicie a Aplicação:**
     ```bash
-    [comando para rodar a API - ex: npm run start:dev ou uvicorn main:app --reload]
+    node src/index.js
     ```
     A API estará rodando em `http://localhost:[Porta]`.
 
