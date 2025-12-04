@@ -24,9 +24,9 @@ Estas instruções guiarão você na obtenção de uma cópia do projeto em exec
 
 Você precisará ter instalado na sua máquina:
 
-* **[Linguagem de Programação]** (Versão [x.x])
-* **[Gerenciador de Pacotes]** (ex: npm, pip, composer, etc.)
-* **[Sistema de Banco de Dados]** (ex: PostgreSQL, MySQL, etc.)
+* **Node.js** 
+* **NPM** 
+* **MySQL Server** 
 * **Docker e Docker Compose** (Opcional, mas recomendado para o ambiente)
 
 #### ⚙️ Instalação e Execução
